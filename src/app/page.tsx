@@ -1,13 +1,13 @@
-import React from 'react';
-import ListingsPage from '@/components/ListingsPage';
-import { getListings } from '@/hooks/use-listings';
+'use client';
 
-export default async function HomePage() {
-  try {
-    const listings = await getListings();
-    return <ListingsPage listings={listings} />;
-  } catch (error) {
-    console.error('Error fetching listings:', error);
-    return <div>Error loading listings. Please try again later.</div>;
-  }
+import HomeClient from '../components/HomeClient'
+
+export default function Home() {
+  return (
+    <main>
+      <h1>Welcome to 2ClickBroker</h1>
+      <p>This is a static element that should always render.</p>
+      <HomeClient />
+    </main>
+  )
 }

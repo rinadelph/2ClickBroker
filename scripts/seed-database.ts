@@ -6,7 +6,7 @@ async function main() {
   // Create sample users
   const user1 = await prisma.user.create({
     data: {
-      email: 'john@example.com',
+      email: 'john@example.com', // This line is causing the error
       name: 'John Doe',
     },
   });

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { signOut } from 'next-auth/react';
 
 interface User {
   name: string | null;
@@ -23,7 +24,15 @@ interface ListingsPageProps {
 const ListingsPage: React.FC<ListingsPageProps> = ({ listings }) => {
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Listings</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-2xl font-bold">Listings</h1>
+        <button
+          onClick={() => signOut({ callbackUrl: '/' })}
+          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+        >
+          Sign Out
+        </button>
+      </div>
       <ul>
         {listings.map((listing) => (
           <li key={listing.id} className="mb-4 p-4 border rounded">

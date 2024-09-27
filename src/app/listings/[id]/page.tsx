@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import { notFound } from 'next/navigation';
 import ListingDetails from '@/components/listings/ListingDetails';
@@ -10,7 +12,7 @@ interface ListingPageProps {
 }
 
 const ListingPage: React.FC<ListingPageProps> = ({ params }) => {
-  const [listing, setListing] = React.useState(null);
+  const [listing, setListing] = React.useState<any>(null); // Use 'any' temporarily
 
   React.useEffect(() => {
     const fetchListing = async () => {

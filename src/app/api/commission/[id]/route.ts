@@ -5,9 +5,13 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get('id');
 
+  if (!id) {
+    return NextResponse.json({ error: 'Missing id parameter' }, { status: 400 });
+  }
+
   try {
     const commission = await prisma.commission.findUnique({
-      where: { id: Number(id) },
+      where: { id: id }, // Use id as a string
     });
 
     if (!commission) {
@@ -16,6 +20,7 @@ export async function GET(request: Request) {
 
     return NextResponse.json(commission);
   } catch (error) {
+    console.error('Error fetching commission:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

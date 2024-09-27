@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 const listingSchema = z.object({
   title: z.string().min(1).max(100),
@@ -23,11 +25,19 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user || !session.user.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await request.json();
     const validatedData = listingSchema.parse(body);
 
     const newListing = await prisma.listing.create({
-      data: validatedData,
+      data: {
+        ...validatedData,
+        userId: session.user.id, // This is now a string, matching the Prisma schema
+      },
     });
 
     return NextResponse.json(newListing, { status: 201 });

@@ -1,22 +1,14 @@
-import React from 'react';
-import { useAuth } from '@/hooks/use-auth';
+'use client';
 
-const DashboardPage: React.FC = () => {
-  const { session } = useAuth();
+import { withAuth } from '@/components/withAuth';
 
+function DashboardPage() {
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
-      {session ? (
-        <div>
-          <p>Welcome, {session.user?.name}!</p>
-          {/* Add dashboard content */}
-        </div>
-      ) : (
-        <p>Please sign in to view your dashboard.</p>
-      )}
+      <h1>Dashboard</h1>
+      {/* Add your dashboard content here */}
     </div>
   );
-};
+}
 
-export default DashboardPage;
+export default withAuth(DashboardPage);

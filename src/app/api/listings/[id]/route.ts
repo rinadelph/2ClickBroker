@@ -11,9 +11,10 @@ const listingUpdateSchema = z.object({
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
   const { id } = params;
+
   try {
     const listing = await prisma.listing.findUnique({
-      where: { id: Number(id) },
+      where: { id: id }, // Use id as a string
     });
 
     if (!listing) {
@@ -34,7 +35,7 @@ export async function PUT(request: Request, { params }: { params: { id: string }
     const validatedData = listingUpdateSchema.parse(body);
 
     const updatedListing = await prisma.listing.update({
-      where: { id: Number(id) },
+      where: { id: id }, // Use id as a string
       data: validatedData,
     });
 
@@ -52,7 +53,7 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
   const { id } = params;
   try {
     await prisma.listing.delete({
-      where: { id: Number(id) },
+      where: { id: id }, // Use id as a string
     });
     return NextResponse.json({ message: 'Listing deleted successfully' });
   } catch (error) {

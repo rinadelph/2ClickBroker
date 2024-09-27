@@ -1,3 +1,5 @@
+"use client";
+
 import React from 'react';
 import ListingForm from '@/components/listings/ListingForm';
 

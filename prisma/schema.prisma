@@ -32,30 +32,34 @@ model Group {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  name      String?
-  image     String?
-  accounts  Account[]
-  sessions  Session[]
-  listings  Listing[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id            String        @id @default(uuid())
+  email         String        @unique
+  name          String
+  role          String        @default("user")
+  image         String?
+  password      String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  listings      Listing[]
+  commissions   Commission[]
+  subscriptions Subscription[]
 }
 
 model Account {
-  id                 Int       @id @default(autoincrement())
-  userId             Int
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?   @db.Text
-  access_token       String?   @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?   @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -63,30 +67,72 @@ model Account {
 }
 
 model Session {
-  id           Int       @id @default(autoincrement())
-  sessionToken String    @unique
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
   userId       Int
   expires      DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
   identifier String
-  token      String    @unique
+  token      String   @unique
   expires    DateTime
 
   @@unique([identifier, token])
 }
 
 model Listing {
-  id          Int      @id @default(autoincrement())
+  id          String       @id @default(cuid())
   title       String
   description String
   price       Float
   location    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
   userId      Int
-  user        User     @relation(fields: [userId], references: [id])
+  user        User         @relation(fields: [userId], references: [id])
+  commissions Commission[]
+  status    String    @default("active")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Analytics {
+  id        Int      @id @default(autoincrement())
+  event     String
+  timestamp DateTime @default(now())
+  // Add other relevant fields here
+}
+
+model Commission {
+  id        String   @id @default(uuid())
+  userId    Int
+  listingId String
+  amount    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user    User    @relation(fields: [userId], references: [id])
+  listing Listing @relation(fields: [listingId], references: [id])
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  userId    Int
+  plan      String
+  status    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model Location {
+  id        Int      @id @default(autoincrement())
+  latitude  Float
+  longitude Float
+  address   String
+  listingId String
+  listing   Listing  @relation(fields: [listingId], references: [id])
 }
