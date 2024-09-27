@@ -1,0 +1,19 @@
+import { getProviders, signIn } from 'next-auth/react';
+
+export default async function SignUpPage() {
+  const providers = await getProviders();
+
+  return (
+    <div>
+      <h1>Sign Up</h1>
+      {providers &&
+        Object.values(providers).map((provider) => (
+          <div key={provider.name}>
+            <button onClick={() => signIn(provider.id)}>
+              Sign up with {provider.name}
+            </button>
+          </div>
+        ))}
+    </div>
+  );
+}

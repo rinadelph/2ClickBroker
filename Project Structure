@@ -1,0 +1,167 @@
+2click-broker-lms/
+├── .env
+├── .gitignore
+├── package.json
+├── tsconfig.json
+├── next.config.js
+├── postcss.config.js
+├── tailwind.config.js
+├── middleware.ts
+├── prisma/
+│   └── schema.prisma
+├── public/
+│   ├── images/
+│   │   └── logo.svg
+│   └── fonts/
+├── src/
+│   ├── app/
+│   │   ├── api/
+│   │   │   ├── listings/
+│   │   │   │   ├── route.ts
+│   │   │   │   ├── [id]/
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── area/
+│   │   │   │       └── route.ts
+│   │   │   ├── analytics/
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/
+│   │   │   │       └── route.ts
+│   │   │   ├── commission/
+│   │   │   │   └── route.ts
+│   │   │   ├── auth/
+│   │   │   │   ├── verify/
+│   │   │   │   │   └── route.ts
+│   │   │   │   └── token/
+│   │   │   │       └── route.ts
+│   │   │   ├── subscriptions/
+│   │   │   │   └── route.ts
+│   │   │   └── webhooks/
+│   │   │       ├── clerk/
+│   │   │       │   └── route.ts
+│   │   │       └── stripe/
+│   │   │           └── route.ts
+│   │   ├── dashboard/
+│   │   │   ├── page.tsx
+│   │   │   └── layout.tsx
+│   │   ├── listings/
+│   │   │   ├── page.tsx
+│   │   │   ├── create/
+│   │   │   │   └── page.tsx
+│   │   │   └── [id]/
+│   │   │       ├── page.tsx
+│   │   │       ├── edit/
+│   │   │       │   └── page.tsx
+│   │   │       └── commission/
+│   │   │           └── page.tsx
+│   │   ├── map/
+│   │   │   ├── page.tsx
+│   │   │   └── area-select/
+│   │   │       └── page.tsx
+│   │   ├── analytics/
+│   │   │   ├── page.tsx
+│   │   │   └── [id]/
+│   │   │       └── page.tsx
+│   │   ├── account/
+│   │   │   ├── page.tsx
+│   │   │   ├── settings/
+│   │   │   │   └── page.tsx
+│   │   │   └── subscription/
+│   │   │       └── page.tsx
+│   │   ├── admin/
+│   │   │   ├── layout.tsx
+│   │   │   ├── page.tsx
+│   │   │   ├── users/
+│   │   │   │   └── page.tsx
+│   │   │   └── settings/
+│   │   │       └── page.tsx
+│   │   ├── crm/
+│   │   │   ├── page.tsx
+│   │   │   └── [id]/
+│   │   │       └── page.tsx
+│   │   ├── sign-in/[[...sign-in]]/
+│   │   │   └── page.tsx
+│   │   ├── sign-up/[[...sign-up]]/
+│   │   │   └── page.tsx
+│   │   ├── verify-access/
+│   │   │   └── page.tsx
+│   │   ├── layout.tsx
+│   │   └── page.tsx
+│   ├── components/
+│   │   ├── ui/
+│   │   │   ├── Button.tsx
+│   │   │   ├── Input.tsx
+│   │   │   ├── Select.tsx
+│   │   │   ├── Checkbox.tsx
+│   │   │   ├── Modal.tsx
+│   │   │   ├── Dropdown.tsx
+│   │   │   ├── Table.tsx
+│   │   │   ├── Pagination.tsx
+│   │   │   └── Toast.tsx
+│   │   ├── layout/
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Sidebar.tsx
+│   │   │   └── Footer.tsx
+│   │   ├── listings/
+│   │   │   ├── ListingCard.tsx
+│   │   │   ├── ListingGrid.tsx
+│   │   │   ├── ListingForm.tsx
+│   │   │   ├── ListingDetails.tsx
+│   │   │   ├── CommissionInfo.tsx
+│   │   │   └── TwoClickAccess.tsx
+│   │   ├── map/
+│   │   │   ├── MapView.tsx
+│   │   │   ├── MapMarker.tsx
+│   │   │   ├── AreaSelect.tsx
+│   │   │   └── ZipCodeSearch.tsx
+│   │   ├── analytics/
+│   │   │   ├── AnalyticsChart.tsx
+│   │   │   ├── AnalyticsSummary.tsx
+│   │   │   └── ListingAnalytics.tsx
+│   │   ├── dashboard/
+│   │   │   ├── DashboardSummary.tsx
+│   │   │   ├── RecentListings.tsx
+│   │   │   └── QuickActions.tsx
+│   │   ├── admin/
+│   │   │   ├── UserManagement.tsx
+│   │   │   └── SystemSettings.tsx
+│   │   ├── subscription/
+│   │   │   ├── PlanSelector.tsx
+│   │   │   └── UpgradePrompt.tsx
+│   │   ├── crm/
+│   │   │   ├── ContactList.tsx
+│   │   │   └── ContactDetails.tsx
+│   │   └── common/
+│   │       ├── SEO.tsx
+│   │       ├── ErrorBoundary.tsx
+│   │       ├── LoadingSpinner.tsx
+│   │       └── AccessVerification.tsx
+│   ├── hooks/
+│   │   ├── use-commission-token.ts
+│   │   ├── use-listings.ts
+│   │   ├── use-analytics.ts
+│   │   ├── use-map.ts
+│   │   ├── use-subscription.ts
+│   │   └── use-access-verification.ts
+│   ├── lib/
+│   │   ├── prisma.ts
+│   │   ├── auth.ts
+│   │   ├── api.ts
+│   │   ├── utils.ts
+│   │   ├── constants.ts
+│   │   ├── stripe.ts
+│   │   └── geocoding.ts
+│   ├── styles/
+│   │   └── globals.css
+│   ├── types/
+│   │   ├── listing.ts
+│   │   ├── user.ts
+│   │   ├── analytics.ts
+│   │   ├── subscription.ts
+│   │   └── index.ts
+│   └── config/
+│       ├── site.ts
+│       ├── dashboard.ts
+│       └── subscription-tiers.ts
+├── scripts/
+│   └── seed-database.ts
+└── README.md
