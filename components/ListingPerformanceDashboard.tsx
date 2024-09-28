@@ -19,47 +19,24 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-interface Listing {
-  id: string
-  title: string
-  views: number
-  inquiries: number
-}
-
 export default function ListingPerformanceDashboard() {
   const { data: session } = useSession()
-  const [listings, setListings] = useState<Listing[]>([])
+  const [performanceData, setPerformanceData] = useState([])
   const [timeRange, setTimeRange] = useState("Last 30 days")
 
   useEffect(() => {
-    // Fetch listings data from your API
-    const fetchListings = async () => {
+    const fetchPerformanceData = async () => {
       if (session?.user?.id) {
-        try {
-          const response = await fetch(`/api/listings?userId=${session.user.id}`)
-          if (response.ok) {
-            const data = await response.json()
-            setListings(data.listings)
-          } else {
-            console.error('Failed to fetch listings')
-          }
-        } catch (error) {
-          console.error('Error fetching listings:', error)
+        const response = await fetch(`/api/listings/performance?userId=${session.user.id}&timeRange=${timeRange}`)
+        if (response.ok) {
+          const data = await response.json()
+          setPerformanceData(data)
         }
       }
     }
 
-    fetchListings()
-  }, [session])
-
-  // Mock data for the chart
-  const chartData = [
-    { date: '2023-01-01', views: 100, inquiries: 10 },
-    { date: '2023-01-02', views: 120, inquiries: 15 },
-    { date: '2023-01-03', views: 150, inquiries: 20 },
-    { date: '2023-01-04', views: 180, inquiries: 25 },
-    { date: '2023-01-05', views: 200, inquiries: 30 },
-  ];
+    fetchPerformanceData()
+  }, [session, timeRange])
 
   return (
     <div>
@@ -78,41 +55,18 @@ export default function ListingPerformanceDashboard() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="h-[300px] w-full">
+      <div className="h-[400px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData}>
+          <AreaChart data={performanceData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="date" />
             <YAxis />
             <Tooltip />
             <Legend />
-            <Area type="monotone" dataKey="views" stroke="#8884d8" fill="#8884d8" />
-            <Area type="monotone" dataKey="inquiries" stroke="#82ca9d" fill="#82ca9d" />
+            <Area type="monotone" dataKey="views" stackId="1" stroke="#8884d8" fill="#8884d8" name="Views" />
+            <Area type="monotone" dataKey="inquiries" stackId="1" stroke="#82ca9d" fill="#82ca9d" name="Inquiries" />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
-      <div className="mt-6">
-        <h3 className="text-lg font-semibold mb-2">Listing Details</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="py-2 px-4 text-left">Title</th>
-                <th className="py-2 px-4 text-left">Views</th>
-                <th className="py-2 px-4 text-left">Inquiries</th>
-              </tr>
-            </thead>
-            <tbody>
-              {listings.map((listing) => (
-                <tr key={listing.id} className="border-b">
-                  <td className="py-2 px-4">{listing.title}</td>
-                  <td className="py-2 px-4">{listing.views}</td>
-                  <td className="py-2 px-4">{listing.inquiries}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
       </div>
     </div>
   )

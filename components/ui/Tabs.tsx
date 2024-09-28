@@ -1,74 +1,30 @@
-import React, { useState } from 'react'
+import * as React from "react"
+import * as TabsPrimitive from "@radix-ui/react-tabs"
 
-interface TabsProps {
-  defaultValue: string
-  className?: string
-  children: React.ReactNode
-}
+const Tabs = TabsPrimitive.Root
 
-export function Tabs({ defaultValue, className, children }: TabsProps) {
-  const [activeTab, setActiveTab] = useState(defaultValue)
+const TabsList = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.List
+    ref={ref}
+    className={`${className} /* add your styles here */`}
+    {...props}
+  />
+))
+TabsList.displayName = TabsPrimitive.List.displayName
 
-  return (
-    <div className={className}>
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child) && child.type === TabsList) {
-          return React.cloneElement(child, { activeTab, setActiveTab })
-        }
-        if (React.isValidElement(child) && child.type === TabsContent) {
-          return React.cloneElement(child, { activeTab })
-        }
-        return child
-      })}
-    </div>
-  )
-}
+const TabsTrigger = React.forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Trigger
+    ref={ref}
+    className={`${className} /* add your styles here */`}
+    {...props}
+  />
+))
+TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 
-interface TabsListProps {
-  className?: string
-  children: React.ReactNode
-  activeTab?: string
-  setActiveTab?: (value: string) => void
-}
-
-export function TabsList({ className, children, activeTab, setActiveTab }: TabsListProps) {
-  return (
-    <div className={`flex ${className}`}>
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child) && child.type === TabsTrigger) {
-          return React.cloneElement(child, { activeTab, setActiveTab })
-        }
-        return child
-      })}
-    </div>
-  )
-}
-
-interface TabsTriggerProps {
-  value: string
-  children: React.ReactNode
-  activeTab?: string
-  setActiveTab?: (value: string) => void
-}
-
-export function TabsTrigger({ value, children, activeTab, setActiveTab }: TabsTriggerProps) {
-  return (
-    <button
-      className={`px-4 py-2 ${activeTab === value ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-      onClick={() => setActiveTab && setActiveTab(value)}
-    >
-      {children}
-    </button>
-  )
-}
-
-interface TabsContentProps {
-  value: string
-  children: React.ReactNode
-  activeTab?: string
-}
-
-export function TabsContent({ value, children, activeTab }: TabsContentProps) {
-  if (value !== activeTab) return null
-  return <div>{children}</div>
-}
+export { Tabs, TabsList, TabsTrigger }

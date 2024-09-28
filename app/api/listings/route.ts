@@ -23,13 +23,16 @@ export async function GET(req: Request) {
       select: {
         id: true,
         title: true,
-        // Add these fields to your Listing model in schema.prisma
         views: true,
         inquiries: true,
       },
+      orderBy: { views: 'desc' }
     })
 
-    return NextResponse.json({ listings })
+    const topListings = listings.slice(0, 5)
+    const bottomListings = listings.slice(-5).reverse()
+
+    return NextResponse.json({ topListings, bottomListings })
   } catch (error) {
     console.error('Error fetching listings:', error)
     return NextResponse.json({ error: 'Error fetching listings' }, { status: 500 })

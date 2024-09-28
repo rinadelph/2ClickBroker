@@ -16,6 +16,18 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        {/* Add this script tag to load the CSS file on the client side */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined') {
+                import('mapbox-gl/dist/mapbox-gl.css');
+              }
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.className} bg-gray-100`}>
         <Providers>
           {children}
