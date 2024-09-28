@@ -32,19 +32,19 @@ model Group {
 }
 
 model User {
-  id            String        @id @default(uuid())
-  email         String        @unique
-  name          String
-  role          String        @default("user")
-  image         String?
-  password      String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  listings      Listing[]
-  commissions   Commission[]
-  subscriptions Subscription[]
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?   // Add this line
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  accounts       Account[]
+  sessions       Session[]
+  listings       Listing[]
+  commissions    Commission[]
+  subscriptions  Subscription[]
 }
 
 model Account {
@@ -94,14 +94,6 @@ model Listing {
   userId      String
   user        User         @relation(fields: [userId], references: [id])
   commissions Commission[]
-  locations   Location[]
-}
-
-model Analytics {
-  id        Int      @id @default(autoincrement())
-  event     String
-  timestamp DateTime @default(now())
-  // Add other relevant fields here
 }
 
 model Commission {

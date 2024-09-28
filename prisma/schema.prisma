@@ -32,24 +32,24 @@ model Group {
 }
 
 model User {
-  id            String        @id @default(uuid())
-  email         String        @unique
-  name          String
-  role          String        @default("user")
-  image         String?
-  password      String?
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  accounts      Account[]
-  sessions      Session[]
-  listings      Listing[]
-  commissions   Commission[]
-  subscriptions Subscription[]
+  id             String    @id @default(cuid())
+  name           String?
+  email          String    @unique
+  emailVerified  DateTime?
+  image          String?
+  hashedPassword String?   // Make sure this line is present
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  accounts       Account[]
+  sessions       Session[]
+  listings       Listing[]
+  commissions    Commission[]
+  subscriptions  Subscription[]
 }
 
 model Account {
   id                String  @id @default(cuid())
-  userId            Int
+  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -69,7 +69,7 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
-  userId       Int
+  userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -88,26 +88,20 @@ model Listing {
   description String
   price       Float
   location    String
+  status      String       @default("active")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  userId      Int
+  userId      String
   user        User         @relation(fields: [userId], references: [id])
   commissions Commission[]
-  status    String    @default("active")
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
-
-model Analytics {
-  id        Int      @id @default(autoincrement())
-  event     String
-  timestamp DateTime @default(now())
-  // Add other relevant fields here
+  locations   Location[]   // Add this line to create the reverse relation
+  views       Int          @default(0)
+  inquiries   Int         @default(0)
 }
 
 model Commission {
   id        String   @id @default(uuid())
-  userId    Int
+  userId    String
   listingId String
   amount    Float
   createdAt DateTime @default(now())
@@ -119,7 +113,7 @@ model Commission {
 
 model Subscription {
   id        String   @id @default(cuid())
-  userId    Int
+  userId    String
   plan      String
   status    String
   createdAt DateTime @default(now())
