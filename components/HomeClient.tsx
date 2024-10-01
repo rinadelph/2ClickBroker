@@ -24,8 +24,8 @@ export default function HomeClient() {
             2ClickBroker
           </Link>
           <nav className="hidden md:flex space-x-4">
-            <Link href="/listings" className="text-gray-600 hover:text-blue-600">
-              Listings
+            <Link href="/dashboard" className="text-gray-600 hover:text-blue-600">
+              Dashboard
             </Link>
             <Link href="/agents" className="text-gray-600 hover:text-blue-600">
               Agents
