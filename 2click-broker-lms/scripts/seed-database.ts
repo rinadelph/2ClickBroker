@@ -9,7 +9,7 @@ async function main() {
       data: {
         email: 'user1@example.com',
         name: 'User One',
-        role: 'user',
+        role: 'user', // Ensure this property is defined in the type
       },
     });
 

@@ -3,43 +3,40 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Create sample users
-  const user1 = await prisma.user.create({
-    data: {
-      email: 'john@example.com', // This line is causing the error
-      name: 'John Doe',
-    },
-  });
+  try {
+    // Seed users
+    const user1 = await prisma.user.create({
+      data: {
+        email: 'user1@example.com',
+        name: 'User One',
+        role: 'user',
+      },
+    });
 
-  const user2 = await prisma.user.create({
-    data: {
-      email: 'jane@example.com',
-      name: 'Jane Smith',
-    },
-  });
+    // Create a listing
+    const listing = await prisma.listing.create({
+      data: {
+        title: 'Beautiful House',
+        description: 'A lovely family home',
+        price: 250000,
+        bedrooms: 3,
+        bathrooms: 2,
+        squareFootage: 2000,
+        address: '123 Main St, Anytown, USA',
+        primaryType: 'residential',
+        specificType: 'single-family',
+        characteristics: ['new-construction', 'for-sale'],
+        images: ['/uploads/house1.jpg'],
+        userId: user1.id,
+      },
+    });
 
-  // Create sample listings
-  await prisma.listing.create({
-    data: {
-      title: 'Cozy Apartment',
-      description: 'A cozy apartment in the heart of the city',
-      price: 1000,
-      location: 'New York',
-      userId: user1.id,
-    },
-  });
-
-  await prisma.listing.create({
-    data: {
-      title: 'Spacious House',
-      description: 'A spacious house with a beautiful garden',
-      price: 2500,
-      location: 'Los Angeles',
-      userId: user2.id,
-    },
-  });
-
-  console.log('Database seeded successfully');
+    console.log({ listing });
+  } catch (error) {
+    console.error('Error seeding database:', error);
+  } finally {
+    await prisma.$disconnect();
+  }
 }
 
 main()

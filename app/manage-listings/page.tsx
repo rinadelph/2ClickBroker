@@ -4,6 +4,7 @@ import React, { useState, ChangeEvent } from 'react'
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+import Link from 'next/link'
 import { 
   Select, 
   SelectContent, 
@@ -156,9 +157,11 @@ function ManageListingsContent() {
         <div className="container mx-auto px-6 py-8">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-semibold text-gray-800">Manage Listings</h1>
-            <Button onClick={() => setIsAddModalOpen(true)}>
-              <Plus className="w-5 h-5 mr-2" /> Add New Listing
-            </Button>
+            <Link href="/listings/add">
+              <Button>
+                <Plus className="w-5 h-5 mr-2" /> Add New Listing
+              </Button>
+            </Link>
           </div>
 
           {/* Search and Filters */}
