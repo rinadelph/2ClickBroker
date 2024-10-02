@@ -37,7 +37,8 @@ model User {
   email          String    @unique
   emailVerified  DateTime?
   image          String?
-  hashedPassword String?   // Add this line
+  hashedPassword String?
+  role           String?   // Add this line
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
   accounts       Account[]
@@ -83,16 +84,22 @@ model VerificationToken {
 }
 
 model Listing {
-  id          String       @id @default(cuid())
-  title       String
-  description String
-  price       Float
-  location    String
-  status      String       @default("active")
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  userId      String
-  user        User         @relation(fields: [userId], references: [id])
+  id               String   @id @default(cuid())
+  title            String
+  description      String
+  price            Float
+  bedrooms         Int      // Add this line
+  bathrooms        Float
+  squareFootage    Float
+  address          String
+  primaryType      String
+  specificType     String
+  characteristics  String[]
+  images           String[]
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
   commissions Commission[]
 }
 

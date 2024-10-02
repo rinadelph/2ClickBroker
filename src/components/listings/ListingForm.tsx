@@ -1,31 +1,31 @@
 "use client";
 
-import React, { useState, ChangeEvent } from 'react';
-import Input from '@/components/ui/Input';
-import Button from '@/components/ui/Button';
+import React, { useState } from 'react';
+import { Listing } from '@/app/manage-listings/page';
+import { Button, Input, Textarea } from '@/components/ui';
 
 interface ListingFormProps {
-  onSubmit: (listing: { title: string; description: string; price: number; location: string }) => void;
+  onSubmit: (listing: Listing) => void;
+  initialData?: Listing;
 }
 
-const ListingForm: React.FC<ListingFormProps> = ({ onSubmit }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [location, setLocation] = useState('');
+const ListingForm: React.FC<ListingFormProps> = ({ onSubmit, initialData }) => {
+  const [title, setTitle] = useState(initialData?.title || '');
+  const [description, setDescription] = useState(initialData?.description || '');
+  const [price, setPrice] = useState(initialData?.price || 0);
+  const [location, setLocation] = useState(initialData?.location || '');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit({ title, description, price: Number(price), location });
+  const handleSubmit = () => {
+    onSubmit({ title, description, price, location } as Listing);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <Input label="Title" value={title} onChange={(e) => setTitle(e.target.value)} />
-      <Input label="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
-      <Input label="Price" type="number" value={price} onChange={(e) => setPrice(e.target.value)} />
-      <Input label="Location" value={location} onChange={(e) => setLocation(e.target.value)} />
-      <Button>Submit</Button>
+      <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" />
+      <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Description" />
+      <Input value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} placeholder="Price" type="number" />
+      <Input value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Location" />
+      <Button type="submit">Submit</Button>
     </form>
   );
 };

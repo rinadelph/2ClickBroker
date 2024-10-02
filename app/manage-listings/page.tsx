@@ -151,33 +151,17 @@ function ManageListingsContent() {
           </a>
         </nav>
       </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50">
-        <div className="container mx-auto px-6 py-8">
-          <div className="flex justify-between items-center mb-6">
-            <h1 className="text-3xl font-semibold text-gray-800">Manage Listings</h1>
-            <Link href="/listings/add">
-              <Button>
-                <Plus className="w-5 h-5 mr-2" /> Add New Listing
-              </Button>
-            </Link>
-          </div>
-
-          {/* Search and Filters */}
-          <div className="mb-6 flex flex-wrap items-center gap-4">
-            <div className="flex-1 min-w-[200px] relative">
-              <Input
-                type="text"
-                placeholder="Search listings..."
-                value={searchQuery}
-                onChange={handleSearchChange}
-                className="w-full pr-10 bg-white"
-              />
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            </div>
+      <main className="flex-1 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-4">
+            <Input
+              type="text"
+              placeholder="Search listings..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
             <Select value={sortBy} onValueChange={(value: keyof Listing) => setSortBy(value)}>
-              <SelectTrigger className="w-[150px] bg-white">
+              <SelectTrigger>
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
@@ -186,83 +170,40 @@ function ManageListingsContent() {
                 <SelectItem value="type">Type</SelectItem>
               </SelectContent>
             </Select>
-            <Select value={filterStatus} onValueChange={(value: 'all' | Listing['status']) => setFilterStatus(value)}>
-              <SelectTrigger className="w-[150px] bg-white">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Statuses</SelectItem>
-                <SelectItem value="Active">Active</SelectItem>
-                <SelectItem value="Pending">Pending</SelectItem>
-                <SelectItem value="Sold">Sold</SelectItem>
-              </SelectContent>
-            </Select>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline">Bulk Actions</Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <DropdownMenuItem>Change Status</DropdownMenuItem>
-                <DropdownMenuItem>Delete Selected</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-            <Tabs value={view} onValueChange={(value) => setView(value as 'table' | 'card')} className="ml-auto">
-              <TabsList className="bg-white">
-                <TabsTrigger value="table"><List className="w-5 h-5" /></TabsTrigger>
-                <TabsTrigger value="card"><Grid className="w-5 h-5" /></TabsTrigger>
+            <Tabs value={filterStatus} onValueChange={(value: 'all' | Listing['status']) => setFilterStatus(value)}>
+              <TabsList>
+                <TabsTrigger value="all">All</TabsTrigger>
+                <TabsTrigger value="active">Active</TabsTrigger>
+                <TabsTrigger value="inactive">Inactive</TabsTrigger>
               </TabsList>
             </Tabs>
+            <Button onClick={() => setView(view === 'table' ? 'card' : 'table')}>
+              {view === 'table' ? <Grid className="w-5 h-5" /> : <List className="w-5 h-5" />}
+            </Button>
           </div>
-
-          {/* Listings */}
-          {isLoading ? (
-            <div className="text-center py-10">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-              <p className="mt-2 text-gray-500">Loading listings...</p>
-            </div>
-          ) : error ? (
-            <div className="text-center py-10 text-red-500">Error loading listings</div>
-          ) : (
-            <div>
-              {view === 'table' ? (
-                <ListingTable 
-                  listings={filteredListings as Listing[]} 
-                  onEdit={(listing: Listing) => setEditingListing(listing)}
-                  onDelete={(listing: Listing) => setDeletingListing(listing)}
-                />
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {filteredListings?.map((listing: Listing) => (
-                    <ListingCard 
-                      key={listing.id} 
-                      listing={listing}
-                      onEdit={() => setEditingListing(listing)}
-                      onDelete={() => setDeletingListing(listing)}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Pagination */}
-          <div className="mt-6 flex items-center justify-between">
-            <p className="text-sm text-gray-700">
-              Showing <span className="font-medium">1</span> to <span className="font-medium">8</span> of{' '}
-              <span className="font-medium">20</span> results
-            </p>
-            <div className="flex items-center space-x-2">
-              <Button variant="outline" size="sm">
-                <ChevronLeft className="h-4 w-4 mr-1" />
-                Previous
-              </Button>
-              <Button variant="outline" size="sm">
-                Next
-                <ChevronRight className="h-4 w-4 ml-1" />
-              </Button>
-            </div>
-          </div>
+          <Button onClick={() => setIsAddModalOpen(true)}>
+            <Plus className="w-5 h-5 mr-2" />
+            Add Listing
+          </Button>
         </div>
+
+        {/* Listings */}
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : error ? (
+          <div>Error loading listings</div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredListings?.map((listing: Listing) => (
+              <ListingCard
+                key={listing.id}
+                listing={listing}
+                onEdit={() => setEditingListing(listing)}
+                onDelete={() => setDeletingListing(listing)}
+              />
+            ))}
+          </div>
+        )}
       </main>
 
       {/* User Menu */}

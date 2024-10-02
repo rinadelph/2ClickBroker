@@ -5,6 +5,7 @@ import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
 import { compare } from "bcrypt"
 import { prisma } from "./prisma"
+import NextAuth from "next-auth";
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -50,5 +51,14 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/signin'
-  }
-}
+  },
+  callbacks: {
+    async session({ session, user }) {
+      // Add the user ID to the session
+      session.user.id = user.id;
+      return session;
+    },
+  },
+};
+
+export default NextAuth(authOptions);

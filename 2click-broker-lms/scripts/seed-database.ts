@@ -9,56 +9,30 @@ async function main() {
       data: {
         email: 'user1@example.com',
         name: 'User One',
-        role: 'user', // Ensure this property is defined in the type
+        role: 'user',
       },
     });
 
-    const user2 = await prisma.user.create({
-      data: {
-        email: 'user2@example.com',
-        name: 'User Two',
-        role: 'admin',
-      },
-    });
-
-    // Seed listings
-    const listing1 = await prisma.listing.create({
+    // Create a listing
+    const listing = await prisma.listing.create({
       data: {
         title: 'Beautiful House',
         description: 'A lovely family home',
         price: 250000,
-        location: 'New York',
-        status: 'active',
+        bedrooms: 3,
+        bathrooms: 2,
+        squareFootage: 2000,
+        address: '123 Main St, Anytown, USA',
+        primaryType: 'residential',
+        specificType: 'single-family',
+        characteristics: ['new-construction', 'for-sale'],
+        images: ['/uploads/house1.jpg'],
         userId: user1.id,
-        locations: {
-          create: {
-            latitude: 40.7128,
-            longitude: -74.0060,
-            address: '123 Main St, New York, NY 10001',
-          },
-        },
-      },
-    });
-
-    const listing2 = await prisma.listing.create({
-      data: {
-        title: 'Cozy Apartment',
-        description: 'Perfect for young professionals',
-        price: 150000,
-        location: 'San Francisco',
-        status: 'active',
-        userId: user2.id,
-        locations: {
-          create: {
-            latitude: 37.7749,
-            longitude: -122.4194,
-            address: '456 Market St, San Francisco, CA 94103',
-          },
-        },
       },
     });
 
     console.log('Database seeded successfully');
+    console.log({ user: user1, listing });
   } catch (error) {
     console.error('Error seeding database:', error);
   } finally {
@@ -66,4 +40,8 @@ async function main() {
   }
 }
 
-main();
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  });

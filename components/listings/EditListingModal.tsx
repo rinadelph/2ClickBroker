@@ -1,5 +1,5 @@
 import React from 'react'
-import { Listing } from '@/app/manage-listings/page'
+import type { Listing } from '@/app/manage-listings/page'
 
 interface EditListingModalProps {
   isOpen: boolean
@@ -16,4 +16,6 @@ const EditListingModal: React.FC<EditListingModalProps> = ({ isOpen, onClose, on
   )
 }
 
-export default EditListingModal
+export default function EditListingModal(props) {
+  // Component implementation
+}

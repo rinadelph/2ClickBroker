@@ -18,20 +18,22 @@ export default function DashboardClient() {
   const [totalInquiries, setTotalInquiries] = useState(0)
 
   useEffect(() => {
-    if (status === 'loading') return
-    if (!session) router.push('/auth/signin')
-    
-    // Fetch dashboard data
-    const fetchDashboardData = async () => {
-      const response = await fetch('/api/dashboard')
-      const data = await response.json()
-      setTotalListings(data.totalListings)
-      setTotalViews(data.totalViews)
-      setTotalInquiries(data.totalInquiries)
-    }
+    if (status === 'loading') return;
+    if (status === 'unauthenticated') {
+      router.push('/signin');
+    } else {
+      // Fetch dashboard data only when authenticated
+      const fetchDashboardData = async () => {
+        const response = await fetch('/api/dashboard')
+        const data = await response.json()
+        setTotalListings(data.totalListings)
+        setTotalViews(data.totalViews)
+        setTotalInquiries(data.totalInquiries)
+      }
 
-    fetchDashboardData()
-  }, [session, status, router])
+      fetchDashboardData();
+    }
+  }, [status, router])
 
   if (status === 'loading') return <div>Loading...</div>
   if (!session) return null

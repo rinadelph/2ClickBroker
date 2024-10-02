@@ -1,24 +1,20 @@
-import React from 'react';
+import React from 'react'
+import { Listing } from '@/app/manage-listings/page'
 
 interface ListingDetailsProps {
-  listing: {
-    id: number;
-    title: string;
-    description: string;
-    price: number;
-    location: string;
-  };
+  listing: Listing
 }
 
 const ListingDetails: React.FC<ListingDetailsProps> = ({ listing }) => {
   return (
     <div>
-      <h2 className="text-2xl font-bold mb-4">{listing.title}</h2>
-      <p className="mb-4">{listing.description}</p>
-      <p className="mb-4">Price: ${listing.price}</p>
+      <h1>{listing.title}</h1>
+      <p>{listing.description}</p>
+      <p>Price: ${listing.price}</p>
       <p>Location: {listing.location}</p>
+      <p>Posted by: {listing.user.name || listing.user.email}</p>
     </div>
-  );
-};
+  )
+}
 
-export default ListingDetails;
+export default ListingDetails

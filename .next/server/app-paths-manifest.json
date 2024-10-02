@@ -1,4 +1,6 @@
 {
-  "/listings/add/page": "app/listings/add/page.js",
+  "/manage-listings/page": "app/manage-listings/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/page": "app/page.js",
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js"
 }
